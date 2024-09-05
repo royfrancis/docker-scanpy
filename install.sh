@@ -4,7 +4,7 @@ set -e
 
 ## Build ARGs
 NCPUS=${NCPUS:--1}
-QUARTO_VERSION="1.4.549"
+QUARTO_VERSION="1.5.57"
 
 ## Function to install apt packages only if they are not installed
 function apt_install() {
@@ -21,7 +21,8 @@ apt_install \
     g++ \
     gcc \
     gdebi \
-    libfmt-dev
+    libfmt-dev \
+    clang
 
 ## Install quarto cli
 curl -o quarto-linux-${TARGETARCH}.deb -L https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-${TARGETARCH}.deb

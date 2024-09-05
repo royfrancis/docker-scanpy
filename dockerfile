@@ -1,45 +1,37 @@
 FROM jupyter/minimal-notebook:python-3.10
 
+LABEL authors="Roy Francis"
+LABEL Description="Scanpy development environment for single-cell rnaseq"
+LABEL org.opencontainers.image.authors="zydoosu@gmail.com"
+LABEL org.opencontainers.image.source="https://github.com/royfrancis/docker-scanpy"
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG TARGETARCH
 
 USER root
 
-COPY install_scanpy.sh /tmp/
+COPY install.sh /tmp/
 
-RUN bash /tmp/install_scanpy.sh
+RUN bash /tmp/install.sh
 
-RUN mamba install --yes --channel conda-forge --channel bioconda \
-    python=3.10 \
-    bioconda::cellxgene=1.2.0 \
-    bbknn=1.6.0 \
-    celltypist=1.6.2 \
-    conda-forge::distinctipy=1.3.4 \
-    fa2=0.3.5 \
-    gseapy=1.0.6 \
-    bioconda::harmonypy=0.0.9 \
-    matplotlib-venn=0.11.9 \
-    openpyxl=3.1.2 \
-    pybiomart=0.2.0 \
-    scanorama=1.7.4 \
-    scanpy=1.9.6 \
-    scrublet=0.2.3 \
-    scvi-tools=1.0.4  && \
+RUN mamba update -y mamba && \
+    mamba install -y -c conda-forge -c bioconda python=3.10 jax jaxlib cmake && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
+COPY requirements.txt /tmp/
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir \
-    leidenalg==0.10.1 \
-    louvain==0.8.1
+    pip install --no-cache-dir -r /tmp/requirements.txt
+    # cat /tmp/requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install --no-cache-dir
 
 USER ${NB_UID}
 WORKDIR /home/jovyan
 
-## docker build --platform=linux/amd64 -t scanpy --file dockerfile .
-## docker run --rm -ti --platform=linux/amd64 -p 8888:8888 -v ${PWD}:/home/jovyan/workdir scanpy
-##
-## docker tag scanpy royfrancis/scanpy:latest
-## docker push royfrancis/scanpy:latest
+## docker build --platform=linux/amd64 -t ghcr.io/royfrancis/scanpy:1.2 --file dockerfile .
+## docker tag ghcr.io/royfrancis/scanpy:1.2 ghcr.io/royfrancis/scanpy:latest
+## docker run --rm --platform=linux/amd64 -p 8888:8888 -v ${PWD}:/home/jovyan/workdir ghcr.io/royfrancis/scanpy:latest
+## docker run --rm -ti --platform=linux/amd64 -u 1000:1000 -v ${PWD}:/home/jovyan/workdir ghcr.io/royfrancis/scanpy:latest bash
+## docker push ghcr.io/royfrancis/scanpy:1.2 
+## docker push ghcr.io/royfrancis/scanpy:latest
