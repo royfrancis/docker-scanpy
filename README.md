@@ -6,6 +6,7 @@ Docker container for single-cell transcriptomics analysis
 - **Doublet detection**: scrublet
 - **Celltyping**: celltypist
 - **Integration**: bbknn, harmonypy, pyliger, scvi, scanorama, scib-metrics
+- **Utils**: distinctipy, pickle, pooch
 - **Other**: jupyterlab, quarto, vscode
 
 ## Run container
@@ -24,6 +25,16 @@ docker run --rm --platform=linux/amd64 -u 1000:1000 -v ${PWD}:/home/jovyan/workd
 docker build --platform=linux/amd64 -t scanpy:latest --file dockerfile .
 ```
 
+## Versions
+
+**v1.3**
+
+- Updated quarto to 1.7.32
+- Added distinctipy for distinct colors
+- Added pip-review
+- Added pyliger
+- Added pooch
+
 ---
 
-2024 Roy Francis
+2025 Roy Francis

@@ -4,7 +4,7 @@ set -e
 
 ## Build ARGs
 NCPUS=${NCPUS:--1}
-QUARTO_VERSION="1.5.57"
+QUARTO_VERSION="1.7.32"
 
 ## Function to install apt packages only if they are not installed
 function apt_install() {
@@ -25,9 +25,9 @@ apt_install \
     clang
 
 ## Install quarto cli
-curl -o quarto-linux-${TARGETARCH}.deb -L https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-${TARGETARCH}.deb
-gdebi --non-interactive quarto-linux-${TARGETARCH}.deb
-rm -rf quarto-linux-${TARGETARCH}.deb
+curl -o quarto.deb -L https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-${TARGETARCH}.deb
+gdebi --non-interactive quarto.deb
+rm -rf quarto.deb
 
 ## Install Quarto Jupyter extension
 python3 -m pip install jupyterlab-quarto

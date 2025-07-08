@@ -16,3 +16,8 @@ scrublet
 scanorama==1.7.4
 scikit-misc
 scvi-tools==1.1.6
+distinctipy # for distinct colors
+pip-review # for reviewing and updating packages
+pyliger
+pooch # for downloading datasets
+pickle # for saving and loading objects
